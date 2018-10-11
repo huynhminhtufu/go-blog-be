@@ -5,6 +5,7 @@ import (
 
 	"github.com/huynhminhtufu/go-blog-be/app/lib"
 	"github.com/huynhminhtufu/go-blog-be/app/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // GetAllUsersHandler ...
@@ -15,6 +16,22 @@ func GetAllUsersHandler(w http.ResponseWriter, req *http.Request) {
 	res.SendOK(users)
 }
 
+// Hash password
+func hashAndSalt(pwd []byte) string {
+	// Use GenerateFromPassword to hash & salt pwd.
+	// MinCost is just an integer constant provided by the bcrypt
+	// package along with DefaultCost & MaxCost.
+	// The cost can be any value you want provided it isn't lower
+	// than the MinCost (4)
+	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
+	if err != nil {
+		// Log error
+	}
+	// GenerateFromPassword returns a byte slice so we need to
+	// convert the bytes to a string and return it
+	return string(hash)
+}
+
 // CreateUserHandler ...
 func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 	req := lib.Request{ResponseWriter: w, Request: r}
@@ -22,6 +39,9 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 
 	user := new(models.User)
 	req.GetJSONBody(user)
+
+	// Hash password
+	user.Password = hashAndSalt([]byte(user.Password))
 
 	if err := user.Save(); err != nil {
 		res.SendBadRequest(err.Error())

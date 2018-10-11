@@ -21,9 +21,9 @@ type User struct {
 	UpdatedAt *time.Time `json:"updatedAt, omitempty"`
 	DeletedAt *time.Time `json:"deletedAt, omitempty" sql:"index"`
 
-	FirstName string `json:"firstname, omitempty" gorm:"not null; type:varchar(100)"`
-	LastName  string `json:"lastname, omitempty" gorm:"not null; type:varchar(100)"`
-	Email     string `json:"email, omitempty" gorm:"not null; type:varchar(100)"`
+	Name     string `json:"name" gorm:"not null; type:varchar(250)"`
+	Email    string `json:"email" gorm:"not null; type:varchar(250); unique_index"`
+	Password string `json:"password" gorm:"not null; type:varchar(250)"`
 }
 
 // TableName set User's table name to be `profiles`

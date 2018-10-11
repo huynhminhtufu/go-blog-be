@@ -34,12 +34,14 @@ func NewRouter() *mux.Router {
 	 */
 	// usersRouter.HandleFunc("/", l.Use(c.GetAllUsersHandler, m.SaySomething())).Methods("GET")
 
+	var apiVersion string = "/api/v1"
+
 	// User routes
-	mainRouter.Methods("GET").Path("/api/users").HandlerFunc(controllers.GetAllUsersHandler)
-	mainRouter.Methods("POST").Path("/api/users").HandlerFunc(controllers.CreateUserHandler)
-	mainRouter.Methods("GET").Path("/api/users/{id}").HandlerFunc(controllers.GetUserByIDHandler)
-	mainRouter.Methods("PUT").Path("/api/users/{id}").HandlerFunc(controllers.UpdateUserHandler)
-	mainRouter.Methods("DELETE").Path("/api/users/{id}").HandlerFunc(controllers.DeleteUserHandler)
+	mainRouter.Methods("GET").Path(apiVersion + "/users").HandlerFunc(controllers.GetAllUsersHandler)
+	mainRouter.Methods("POST").Path(apiVersion + "/users").HandlerFunc(controllers.CreateUserHandler)
+	mainRouter.Methods("GET").Path(apiVersion + "/users/{id}").HandlerFunc(controllers.GetUserByIDHandler)
+	mainRouter.Methods("PUT").Path(apiVersion + "/users/{id}").HandlerFunc(controllers.UpdateUserHandler)
+	mainRouter.Methods("DELETE").Path(apiVersion + "/users/{id}").HandlerFunc(controllers.DeleteUserHandler)
 
 	return mainRouter
 }
